@@ -516,7 +516,7 @@ const EditProductPage = () => {
         <div className="flex gap-4">
           <button
             type="submit"
-            className={`btn btn-wide btn-soft btn-success ${isSubmitting ? 'disabled:cursor-not-allowed' : ''}`}
+            className={`btn w- lg:btn-wide btn-soft btn-success ${isSubmitting ? 'disabled:cursor-not-allowed' : ''}`}
             
           >
             {isSubmitting ? "Updating..." : "Update Product"}
@@ -524,7 +524,7 @@ const EditProductPage = () => {
           <button
             type="button"
             onClick={() => navigate("/admin/products")}
-            className="btn btn-wide btn-soft btn-error"
+            className="btn lg:btn-wide btn-soft btn-error"
           >
             Cancel
           </button>
