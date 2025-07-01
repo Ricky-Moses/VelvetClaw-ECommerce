@@ -4,11 +4,18 @@ import {
   removeFromCart,
   updateCartItemQuantity,
 } from "../../Redux/Slice/cartSlice";
+import { useMemo } from "react";
 
 const CartContents = ({ cart, userId, guestId }) => {
   const dispatch = useDispatch();
 
-  // Handle adding or subtracting to cart
+  // Calculate total price
+  const totalPrice = useMemo(() => {
+    return cart?.products.reduce((total, product) => {
+      return total + product.price * product.quantity;
+    }, 0);
+  }, [cart]);
+
   const handleAddToCart = (productId, delta, quantity, sizes, colors) => {
     const newQuantity = quantity + delta;
     if (newQuantity >= 1) {
@@ -28,8 +35,14 @@ const CartContents = ({ cart, userId, guestId }) => {
   const handleRemoveFromCart = (productId, sizes, colors) => {
     dispatch(removeFromCart({ productId, guestId, userId, sizes, colors }));
   };
+
   return (
     <div>
+      {/* Total Price Display */}
+      <div className="flex justify-end font-semibold text-lg mb-4">
+        Total: ₹ {totalPrice?.toLocaleString()}
+      </div>
+
       {cart?.products.map((products, idx) => (
         <div
           key={idx}
@@ -84,12 +97,15 @@ const CartContents = ({ cart, userId, guestId }) => {
           <div className="">
             <p className="">₹ {products?.price?.toLocaleString()}</p>
             <button
-            onClick={() => handleRemoveFromCart(
-                products.productId,
-                products.sizes,
-                products.colors
-            )}
-            className="btn bg-transparent border-0 shadow-none">
+              onClick={() =>
+                handleRemoveFromCart(
+                  products.productId,
+                  products.sizes,
+                  products.colors
+                )
+              }
+              className="btn bg-transparent border-0 shadow-none"
+            >
               <FaRegTrashAlt className=" text-main-theme text-lg" />
             </button>
           </div>
